@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404, render
 from rest_framework.views import APIView
+
 from rest_framework.response import Response
 from .models import Post, Category, Comment
 from user.models import User
@@ -29,8 +30,8 @@ class PostRead(APIView):
 class PostUpdate(APIView):
     # request = [id, title, content]
     def put(self, request):
-        # post = Post.objects.filter(id = request.data[id])
-        post = get_object_or_404(Post, pk = id)
+        # post = Post.objects.filter(id = request.data["id"])
+        post = get_object_or_404(Post, pk = request.data["id"])
 
         post.title = request.data["title"]
         post.content = request.data["content"]
@@ -42,7 +43,8 @@ class PostUpdate(APIView):
 class PostDelete(APIView):
     # request = [id]
     def delete(self, request):
-        post = Post.objects.filter(id = request.data[id])
+        # post = Post.objects.filter(id = request.data["id"])
+        post = get_object_or_404(Post, pk = request.data["id"])
 
         post.delete()
         
@@ -72,15 +74,18 @@ class CommentRead(APIView):
 class CommentUpdate(APIView):
     # request = [content]
     def put(self, request):
-        comment = Comment.objects.filter(id = request.data[id])
+        # comment = Comment.objects.filter(id = request.data["id"])
+        comment = get_object_or_404(Comment, pk = request.data["id"])
 
         comment.content = request.data["content"]
         comment.save()
 
 class CommentDelete(APIView):
+
     # request = [id]
     def delete(self, request):
-        comment = Comment.objects.filter(id = request.data[id])
+        # comment = Comment.objects.filter(id = request.data["id"])
+        comment = get_object_or_404(Comment, pk = request.data["id"])
 
         comment.delete()
         
@@ -167,8 +172,4 @@ class Q6(APIView):
 
         # 개수
         return Response({"message": post.like.count()})
-
-
-
-
 
